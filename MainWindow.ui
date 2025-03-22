@@ -1,0 +1,39 @@
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect><x>0</x><y>0</y><width>500</width><height>400</height></rect>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="titleInput">
+    <property name="placeholderText"><string>Enter Book Title</string></property>
+    <property name="geometry"><rect><x>150</x><y>30</y><width>200</width><height>30</height></rect></property>
+   </widget>
+   <widget class="QLineEdit" name="authorInput">
+    <property name="placeholderText"><string>Enter Author</string></property>
+    <property name="geometry"><rect><x>150</x><y>70</y><width>200</width><height>30</height></rect></property>
+   </widget>
+   <widget class="QLineEdit" name="editionInput">
+    <property name="placeholderText"><string>Enter Edition</string></property>
+    <property name="geometry"><rect><x>150</x><y>110</y><width>200</width><height>30</height></rect></property>
+   </widget>
+   <widget class="QLineEdit" name="publicationInput">
+    <property name="placeholderText"><string>Enter Publication</string></property>
+    <property name="geometry"><rect><x>150</x><y>150</y><width>200</width><height>30</height></rect></property>
+   </widget>
+   <widget class="QPushButton" name="addButton">
+    <property name="text"><string>Add Book</string></property>
+    <property name="geometry"><rect><x>150</x><y>190</y><width>100</width><height>30</height></rect></property>
+   </widget>
+   <widget class="QPushButton" name="viewButton">
+    <property name="text"><string>View All Books</string></property>
+    <property name="geometry"><rect><x>260</x><y>190</y><width>120</width><height>30</height></rect></property>
+   </widget>
+   <widget class="QListWidget" name="bookList">
+    <property name="geometry"><rect><x>100</x><y>240</y><width>300</width><height>100</height></rect></property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
