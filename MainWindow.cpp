@@ -39,3 +39,20 @@ void MainWindow::on_viewButton_clicked()
     for (const string& b : books)
         ui->bookList->addItem(QString::fromStdString(b));
 }
+
+void MainWindow::on_searchButton_clicked()
+{
+    Qstring query = ui->searchInput->text();
+    vector<string> results = searchForText(library, query.toStdString());
+
+    ui->bookList->clear();
+    for (const string& r : results)
+    {
+        ui->bookList->addItem(QString::fromStdString(r));
+    }
+
+    if(results.empty())
+    {
+        QMessageBox::information(this, "No results", "No text found with the keyword");
+    }
+}

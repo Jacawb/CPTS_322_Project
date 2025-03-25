@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Library System</title>
+    <style>
+        body {
+            font-family: Verdana, sans-serif;
+            background: #eef;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #b22222;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+        }
+        nav {
+            background: #333;
+            padding: 8px;
+            text-align: center;
+        }
+        nav button {
+            padding: 8px 16px;
+            background: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        nav button:hover {
+            background: #666;
+        }
+        #main-content {
+            padding: 20px;
+        }
+        .section {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 4px;
+        }
+        button {
+            background: #228B22;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #196619;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>E-Library</h1>
+    </header>
+    <nav>
+        <button onclick="switchTab('home')">Home</button>
+        <button onclick="switchTab('findBooks')">Find Books</button>
+        <button onclick="switchTab('myList')">Reading List</button>
+    </nav>
+
+    <div id="main-content">
+        <!-- Home Section -->
+        <div id="home" class="section visible">
+            <h2>Welcome</h2>
+            <p>Find books and add them to your list.</p>
+        </div>
+
+        <!-- Search Section -->
+        <div id="findBooks" class="section">
+            <h2>Search Books</h2>
+            <form id="lookupForm">
+                <input type="text" id="lookupBox" placeholder="Enter title or author">
+                <button type="submit">Go</button>
+            </form>
+            <ul id="searchResults"></ul>
+        </div>
+
+        <!-- Reading List Section -->
+        <div id="myList" class="section">
+            <h2>Your List</h2>
+            <form id="addBook">
+                <input type="text" id="bookTitle" placeholder="Book Title">
+                <input type="text" id="bookAuthor" placeholder="Author">
+                <button type="submit">Add</button>
+            </form>
+            <ul id="savedBooks"></ul>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(sectionId) {
+            document.querySelectorAll(".section").forEach(sec => sec.classList.remove("visible"));
+            document.getElementById(sectionId).classList.add("visible");
+        }
+
+        document.getElementById("lookupForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            let searchTerm = document.getElementById("lookupBox").value;
+            if (!searchTerm) {
+                alert("Please enter a search term.");
+                return;
+            }
+            console.log("Searching for:", searchTerm);
+
+            fetch(`/search?query=${searchTerm}`)
+                .then(res => res.json())
+                .then(data => {
+                    let resultsBox = document.getElementById("searchResults");
+                    resultsBox.innerHTML = "";
+                    data.forEach(b => {
+                        let item = document.createElement("li");
+                        item.textContent = `${b.title} by ${b.author}`;
+                        resultsBox.appendChild(item);
+                    });
+                })
+                .catch(err => console.error("Error fetching search results:", err));
+        });
+
+        document.getElementById("addBook").addEventListener("submit", function (e) {
+            e.preventDefault();
+            let title = document.getElementById("bookTitle").value;
+            let author = document.getElementById("bookAuthor").value;
+            if (!title || !author) {
+                alert("Fill in both fields!");
+                return;
+            }
+
+            console.log("Adding book:", title, author);
+
+            let newBook = document.createElement("li");
+            newBook.textContent = `${title} by ${author}`;
+            document.getElementById("savedBooks").appendChild(newBook);
+
+            document.getElementById("bookTitle").value = "";
+            document.getElementById("bookAuthor").value = "";
+        });
+
+    </script>
+</body>
+</html>
