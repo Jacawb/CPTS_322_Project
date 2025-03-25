@@ -6,17 +6,16 @@ Video Link:
  * Feature n or Bug Fix n
 
 ## Work Summary (Developer Facing)
-Provide a one paragraph synposis of what your team accomplished this sprint. Don't repeat the "What's New" list of features. Instead, help the instructor understand how you went about the work described there, any barriers you overcame, and any significant learnings for your team.
+In this sprint our team tried creating the basis of the E-Library system. We implemented two of the user stories into C++ code, these include the personalized reading list and the search for text function. Our third user story was going to be implemented but unfortunate circumstances prevented that from happening. We also tried to create a simple front end site as a foundation.  
 
 ## Unfinished Work
-If applicable, explain the work you did not finish in this sprint. For issues/user stories in the current sprint that have not been closed, (a) any progress toward completion of the issues has been clearly tracked (by checking the checkboxes of  acceptance criteria), (b) a comment has been added to the issue to explain why the issue could not be completed (e.g., "we ran out of time" or "we did not anticipate it would be so much work"), and (c) the issue is added to a subsequent sprint, so that it can be addressed later.
+We were planning on finishing a third user story in this sprint but as previously stated could not get it to completion. So that would make four unfinished user stories, those being: citation tools, recommendations, online library catalog integration, and user login. Although we were only planning on having three user stories completed. 
 
 ## Completed Issues/User Stories
 Here are links to the issues that we completed in this sprint:
 
- * URL of issue 1
- * URL of issue 2
- * URL of issue n
+ * Reading lists: https://github.com/Jacawb/CPTS_322_Project/blob/main/logic.cpp
+ * Search for text: https://github.com/Jacawb/CPTS_322_Project/blob/SearchBooksFunction/logic.cpp
 
  Desirables (Remove this section when you save the file):
   * Each issue should be assigned to a milestone
@@ -27,11 +26,7 @@ Here are links to the issues that we completed in this sprint:
   * Story points contribution of each team member should be indicated in a comment
  
  ## Incomplete Issues/User Stories
- Here are links to issues we worked on but did not complete in this sprint:
- 
- * URL of issue 1 <<One sentence explanation of why issue was not completed>>
- * URL of issue 2 <<One sentence explanation of why issue was not completed>>
- * URL of issue n <<One sentence explanation of why issue was not completed>>
+We completed the user stories that we worked on this sprint, therefore we did not have any incomplete issues. Although we only completed two user stories.
  
  Examples of explanations (Remove this section when you save the file):
   * "We ran into a complication we did not anticipate (explain briefly)." 
@@ -41,22 +36,16 @@ Here are links to the issues that we completed in this sprint:
 
 ## Code Files for Review
 Please review the following code files, which were actively developed during this sprint, for quality:
- * [Name of code file 1](https://github.com/your_repo/file_extension)
- * [Name of code file 2](https://github.com/your_repo/file_extension)
- * [Name of code file 3](https://github.com/your_repo/file_extension)
+ * [logic.cpp](https://github.com/Jacawb/CPTS_322_Project/blob/main/logic.cpp)
+ * [logic.cpp](https://github.com/Jacawb/CPTS_322_Project/blob/SearchBooksFunction/logic.cpp) (this is in a different branch)
  
 ## Retrospective Summary
 Here's what went well:
-  * Item 1
-  * Item 2
-  * Item x
+  The features we did manage to work on seemed to have turned out well
+  We had good collaboration
  
 Here's what we'd like to improve:
-   * Item 1
-   * Item 2
-   * Item x
+   Time management
   
 Here are changes we plan to implement in the next sprint:
-   * Item 1
-   * Item 2
-   * Item x
+   * We plan on switching the entire project to Python instead of C++ since it is much better for backend development
