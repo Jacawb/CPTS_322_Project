@@ -12,32 +12,13 @@ In this sprint our team tried creating the basis of the E-Library system. We imp
 We were planning on finishing a third user story in this sprint but as previously stated could not get it to completion. So that would make four unfinished user stories, those being: citation tools, recommendations, online library catalog integration, and user login. Although we were only planning on having three user stories completed. 
 
 ## Completed Issues/User Stories
-Here are links to the issues that we completed in this sprint:
+Here are links to the issues that we completed in this sprint (these functions are in the same file):
 
  * Reading lists: https://github.com/Jacawb/CPTS_322_Project/blob/main/logic.cpp
- * Search for text: https://github.com/Jacawb/CPTS_322_Project/blob/SearchBooksFunction/logic.cpp
-
- Desirables (Remove this section when you save the file):
-  * Each issue should be assigned to a milestone
-  * Each completed issue should be assigned to a pull request
-  * Each completed pull request should include a link to a "Before and After" video
-  * All team members who contributed to the issue should be assigned to it on GitHub
-  * Each issue should be assigned story points using a label
-  * Story points contribution of each team member should be indicated in a comment
+ * Search for text: https://github.com/Jacawb/CPTS_322_Project/blob/main/logic.cpp
  
  ## Incomplete Issues/User Stories
 We completed the user stories that we worked on this sprint, therefore we did not have any incomplete issues. Although we only completed two user stories.
- 
- Examples of explanations (Remove this section when you save the file):
-  * "We ran into a complication we did not anticipate (explain briefly)." 
-  * "We decided that the feature did not add sufficient value for us to work on it in this sprint (explain briefly)."
-  * "We could not reproduce the bug" (explain briefly).
-  * "We did not get to this issue because..." (explain briefly)
-
-## Code Files for Review
-Please review the following code files, which were actively developed during this sprint, for quality:
- * [logic.cpp](https://github.com/Jacawb/CPTS_322_Project/blob/main/logic.cpp)
- * [logic.cpp](https://github.com/Jacawb/CPTS_322_Project/blob/SearchBooksFunction/logic.cpp) (this is in a different branch)
  
 ## Retrospective Summary
 Here's what went well:
