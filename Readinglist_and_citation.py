@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from library_search import LibrarySearch #imports the LibrarySearch class
+from recommendations import Recommendations #imports the Recommendations class
 
 #This function is used to do the initialization
 #There are four main info we need to make a reading list
@@ -37,6 +38,7 @@ class ReadingListManagement:
 
         self.book_list = []
         self.library_search = LibrarySearch(library_catalog) # Jacob added this line to create an instance of the LibrarySearch class
+        self.recommendations = Recommendations(self.book_list, library_catalog)
 
         self.setup_tabs()  
 
@@ -46,6 +48,7 @@ class ReadingListManagement:
         self.book_tab()
         self.citation_tab()
         self.search_tab() # Jacob added search_tab here
+        self.recommendation_tab() # Jacob added reccomendation_tab here
 
     #It will be the framework for our E-lib reading list
     def book_tab(self):
@@ -216,6 +219,24 @@ class ReadingListManagement:
                 self.search_results.insert(tk.END, book)
         else:
             self.search_results.insert(tk.END, "No results found.")
+
+    def recommendation_tab(self):
+        self.recommend_frame = tk.Frame(self.tabs)
+        self.tabs.add(self.recommend_frame, text="Recommendations")
+
+        tk.Label(self.recommend_frame, text="Recommendations will be here.").grid(row=0, column=0, padx=5, pady=5)
+
+        self.recommend_listbox = tk.Listbox(self.recommend_frame, width=80, height=10)
+        self.recommend_listbox.grid(row=1, column=0, columnspan=1, padx=5, pady=5)
+
+        self.show_recommendations()
+
+    def show_recommendations(self):
+        recommendations = self.recommendations.generate_recommendations()
+
+        self.recommend_listbox.delete(0, tk.END)
+        for book in recommendations:
+            self.recommend_listbox.insert(tk.END, str(book))
 
 
 if __name__ == "__main__":
