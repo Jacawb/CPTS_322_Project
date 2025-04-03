@@ -1,13 +1,16 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
+from library_search import LibrarySearch #imports the LibrarySearch class
+
 #This function is used to do the initialization
 #There are four main info we need to make a reading list
 class BookInfo:
-    def __init__(self, title, author, edition="", publish=""):
+    def __init__(self, title, author, edition="", publish="", genre=""):
         self.title = title
         self.author = author
         self.edition = edition
         self.publish = publish
+        self.genre = genre # Jacob added genre to the BookInfo class
 
     def __str__(self):
         return f"{self.title} - {self.author} ({self.edition}, {self.publish})"
@@ -33,6 +36,7 @@ class ReadingListManagement:
         self.root.geometry("800x450")
 
         self.book_list = []
+        self.library_search = LibrarySearch(library_catalog) # Jacob added this line to create an instance of the LibrarySearch class
 
         self.setup_tabs()  
 
@@ -41,6 +45,7 @@ class ReadingListManagement:
         self.tabs.pack(fill="both", expand=True)
         self.book_tab()
         self.citation_tab()
+        self.search_tab() # Jacob added search_tab here
 
     #It will be the framework for our E-lib reading list
     def book_tab(self):
@@ -178,10 +183,50 @@ class ReadingListManagement:
         
         cite = CitationTool(t, a, p, y)
         self.apa_out.set(cite.apa())
-        self.mla_out.set(cite.mla())
+        self.mla_out.set(cite.mla())\
+    
+    # This function creates the search tab in the UI
+    def search_tab(self):
+        self.search_frame = tk.Frame(self.tabs)
+        self.tabs.add(self.search_frame, text="Search Library")
+
+        tk.Label(self.search_frame, text="Enter keyword:").grid(row=0, column=0, padx=5, pady=5)
+
+        self.search_entry = tk.Entry(self.search_frame, width=50)
+        self.search_entry.grid(row=0, column=1, padx=5, pady=5)
+
+        tk.Button(self.search_frame, text="Search", command=self.search_library).grid(row=0, column=2, padx=5, pady=5)
+
+        self.search_results = tk.Listbox(self.search_frame, width=80, height=10)
+        self.search_results.grid(row=1, column=0, columnspan=3, padx=5, pady=5)
+
+    # uses the library_search class to search for the book in the library
+    # The user can search the library using the keyword
+    def search_library(self):
+        keyword = self.search_entry.get().strip()
+        if not keyword:
+            messagebox.showwarning("Input Error", "Please enter a keyword to search.")
+            return
+
+        results = self.library_search.search_for_text(keyword)
+        self.search_results.delete(0, tk.END)
+
+        if results:
+            for book in results:
+                self.search_results.insert(tk.END, book)
+        else:
+            self.search_results.insert(tk.END, "No results found.")
 
 
 if __name__ == "__main__":
     root = tk.Tk()
+
+    #sample data
+    library_catalog = [
+        BookInfo("The Hobbit", "J.R.R. Tolkien", "1st", "Allen & Unwin", "Fantasy"),
+        BookInfo("1984", "George Orwell", "1st", "Secker & Warburg", "Dystopian"),
+        BookInfo("To Kill a Mockingbird", "Harper Lee", "1st", "J.B. Lippincott & Co.", "Fiction")
+    ]
+
     app = ReadingListManagement(root)
     root.mainloop()
