@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Library Offline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Verdana, sans-serif; background: #eef; margin: 0; padding: 0; }
+        header {
+        background: #b22222; 
+        color: #fff;
+        text-align: center; 
+        padding: 15px; 
+        }
+        nav {
+        background: #333;
+        padding: 8px;
+        text-align: center; 
+        }
+        nav button {
+            padding: 8px 16px; background: #444; color: white;
+            border: none; cursor: pointer; transition: 0.3s;
+        }
+        nav button:hover {
+        background: #666; 
+        }
+        #main-content {
+        padding: 20px; 
+        }
+        .section {
+        display: none;
+        }
+        .visible {
+        display: block;
+        }
+        input, button, textarea {
+            padding: 8px; margin: 5px; border-radius: 4px;
+        }
+        button {
+        background: #228B22; color: #fff; cursor: pointer;
+        }
+        button:hover {
+        background: #196619;
+        }
+        ul {
+            list-style-type: none; padding-left: 0;
+        }
+        li {
+            margin: 4px 0;
+        }
+        .readonly-output {
+            background: #f8f8f8;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-style: italic;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>E-Library</h1>
+</header>
+<nav>
+    <button onclick="switchTab('home')">Home</button>
+    <button onclick="switchTab('findBooks')">Find Books</button>
+    <button onclick="switchTab('myList')">Reading List</button>
+    <button onclick="switchTab('citation')">Citation Tool</button>
+</nav>
+
+<div id="main-content">
+    <div id="home" class="section visible">
+        <h2>Welcome</h2>
+        <p>Find books and add them to your list.</p>
+    </div>
+
+    <div id="findBooks" class="section">
+        <h2>Search Books</h2>
+        <input type="text" id="lookupBox" placeholder="Enter title or author">
+        <button onclick="searchBooks()">Search</button>
+        <ul id="searchResults"></ul>
+    </div>
+
+    <div id="myList" class="section">
+        <h2>Your List</h2>
+        <input type="text" id="bookTitle" placeholder="Book Title">
+        <input type="text" id="bookAuthor" placeholder="Author">
+        <input type="text" id="bookYear" placeholder="Year">
+        <input type="text" id="bookPublisher" placeholder="Publisher">
+        <button onclick="addBook()">Add</button>
+        <ul id="savedBooks"></ul>
+    </div>
+
+    <div id="citation" class="section">
+        <h2>Citation Tool</h2>
+        <input type="text" id="citeTitle" placeholder="Title"><br>
+        <input type="text" id="citeAuthor" placeholder="Author"><br>
+        <input type="text" id="citePublisher" placeholder="Publisher"><br>
+        <input type="text" id="citeYear" placeholder="Year"><br>
+        <button onclick="generateCitation()">Generate</button><br><br>
+        <strong>APA:</strong>
+        <div id="apaOutput" class="readonly-output"></div><br>
+        <strong>MLA:</strong>
+        <div id="mlaOutput" class="readonly-output"></div>
+    </div>
+</div>
+
+<script>
+    let readingList = [];
+
+    function switchTab(id) {
+        document.querySelectorAll(".section").forEach(sec => sec.classList.remove("visible"));
+        document.getElementById(id).classList.add("visible");
+        if (id === "myList") renderList();
+    }
+
+    function addBook() {
+    let title = document.getElementById("bookTitle").value.trim();
+    let author = document.getElementById("bookAuthor").value.trim();
+    let publisher = document.getElementById("bookPublisher").value.trim();
+    let year = document.getElementById("bookYear").value.trim();
+
+    if (!title || !author) {
+        alert("Please enter both title and author!");
+        return;
+    }
+    readingList.push({ title, author, publisher, year });
+    alert(` Added: "${title}" by ${author} (${year}, ${publisher})`);
+    document.getElementById("bookTitle").value = "";
+    document.getElementById("bookAuthor").value = "";
+    document.getElementById("bookPublisher").value = "";
+    document.getElementById("bookYear").value = "";
+    renderList();
+}
+
+    function renderList() {
+        let ul = document.getElementById("savedBooks");
+        ul.innerHTML = "";
+        readingList.forEach((book, i) => {
+            let li = document.createElement("list");
+            li.textContent = `${book.title} by ${book.author} (${book.year}, ${book.publisher})`;
+            let delBtn = document.createElement("button");
+            delBtn.textContent = "Delete";
+            delBtn.style.background = "crimson";
+            delBtn.onclick = () => {
+                if (confirm(`Delete "${book.title}" by ${book.author}?`)) {
+                    readingList.splice(i, 1);
+                    alert("Book deleted!");
+                    renderList();
+                }
+            };
+            li.appendChild(delBtn);
+            ul.appendChild(li);
+        });
+    }
+
+
+    function searchBooks() {
+        let term = document.getElementById("lookupBox").value.toLowerCase().trim();
+        let resultUl = document.getElementById("searchResults");
+        resultUl.innerHTML = "";
+
+        if (!term) {
+            alert("Please enter a search term.");
+            return;
+        }
+
+        let found = false;
+        readingList.filter(b => b.title.toLowerCase().includes(term) || b.author.toLowerCase().includes(term))
+            .forEach(book => {
+                let li = document.createElement("list");
+                li.textContent = `${book.title} by ${book.author}`;
+                resultUl.appendChild(li);
+                found = true;
+            });
+
+        if (!found) {
+            alert(" No match found!");
+        }
+    }
+
+    function generateCitation() {
+        let title = document.getElementById("citeTitle").value.trim();
+        let author = document.getElementById("citeAuthor").value.trim();
+        let publisher = document.getElementById("citePublisher").value.trim();
+        let year = document.getElementById("citeYear").value.trim();
+
+        if (!title || !author) {
+            alert(" Title and Author are required for citation!");
+            return;
+        }
+
+        if (year && isNaN(parseInt(year))) {
+            alert(" Year must be a number!");
+            return;
+        }
+
+        const apa = `${author}. (${year}). "${title}". ${publisher}.`;
+        const mla = `${author}. "${title}". ${publisher}, ${year}.`;
+
+        document.getElementById("apaOutput").textContent = apa;
+        document.getElementById("mlaOutput").textContent = mla;
+    }
+</script>
+</body>
+</html>
