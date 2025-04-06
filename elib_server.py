@@ -1,6 +1,6 @@
 import json
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from passlib.hash import pbkdf2_sha256 as hasher
 
 # Globals
@@ -40,6 +40,9 @@ data = load_data()
 @app.route("/new_user", methods=["POST"])
 def new_user():
     req = request.json
+    print(request.data)
+    print(request.is_json)
+
     username = req.get("username")
     password = req.get("password")
 
@@ -73,6 +76,12 @@ def login():
         return jsonify({"error": "Incorrect password."}), 401
 
     return jsonify({"message": f"User '{username}' logged-in successfully."}), 200
+
+
+# Render HTML
+@app.route("/")
+def home():
+    return render_template('FrontEndSite.html')
 
 
 

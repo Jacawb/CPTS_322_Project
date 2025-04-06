@@ -65,6 +65,8 @@
         <button onclick="switchTab('home')">Home</button>
         <button onclick="switchTab('findBooks')">Find Books</button>
         <button onclick="switchTab('myList')">Reading List</button>
+        <button onclick="switchTab('login')">Log In</button>
+        <button onclick="switchTab('accountCreation')">Create Account</button>
     </nav>
 
     <div id="main-content">
@@ -94,6 +96,25 @@
             </form>
             <ul id="savedBooks"></ul>
         </div>
+        
+        <!-- Login Section -->
+        <div id="login" class="section">
+            <h2>Login</h2>
+            <form id="loginForm" action="/login" method="POST">
+                <input type="text" id="loginUsername" placeholder="Username">
+                <input type="text" id="loginPassword" placeholder="Password">
+                <button type="submit">Log In</button>
+            </form>
+        </div>
+        <!-- Login Section -->
+        <div id="accountCreation" class="section">
+            <h2>Account Creation</h2>
+            <form id="loginForm" action="/new_user" method="POST">
+                <input type="text" id="newUsername" placeholder="Username">
+                <input type="text" id="newPassword" placeholder="Password">
+                <button type="submit">Create Account</button>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -101,6 +122,36 @@
             document.querySelectorAll(".section").forEach(sec => sec.classList.remove("visible"));
             document.getElementById(sectionId).classList.add("visible");
         }
+        
+        document.getElementById("login").addEventListener("submit", function(e) {
+            e.preventDefault();
+            let username = document.getElementById("loginUsername").value;
+            let password = document.getElementById("loginPassword").value;
+
+            fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(err => console.error("Login error:", err));
+        });
+
+        document.getElementById("accountCreation").addEventListener("submit", function(e) {
+            e.preventDefault();
+            let username = document.getElementById("newUsername").value;
+            let password = document.getElementById("newPassword").value;
+
+            fetch("/new_user", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(err => console.error("Error:", err));
+        });
 
         document.getElementById("lookupForm").addEventListener("submit", function (e) {
             e.preventDefault();
@@ -143,7 +194,6 @@
             document.getElementById("bookTitle").value = "";
             document.getElementById("bookAuthor").value = "";
         });
-
     </script>
 </body>
 </html>
