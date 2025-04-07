@@ -14,7 +14,7 @@ class BookInfo:
         self.genre = genre # Jacob added genre to the BookInfo class
 
     def __str__(self):
-        return f"{self.title} - {self.author} ({self.edition}, {self.publish})"
+        return f"{self.title} - {self.author} ({self.edition}, {self.publish}, {self.genre})"
 #This function is used to initialize the CitationTool
 #We will have MLA and APA
 class CitationTool:
@@ -37,8 +37,17 @@ class ReadingListManagement:
         self.root.geometry("800x450")
 
         self.book_list = []
-        self.library_search = LibrarySearch(library_catalog) # Jacob added this line to create an instance of the LibrarySearch class
-        self.recommendations = Recommendations(self.book_list, library_catalog)
+        self.library_catalog = [  # Sample library catalog
+            BookInfo("The Hobbit", "J.R.R. Tolkien", "1st", "Allen & Unwin", "Fantasy"),
+            BookInfo("1984", "George Orwell", "1st", "Secker & Warburg", "Dystopian"),
+            BookInfo("To Kill a Mockingbird", "Harper Lee", "1st", "J.B. Lippincott & Co.", "Fiction"),
+            BookInfo("The Fellowship of the Ring", "J.R.R. Tolkien", "1st", "Allen & Unwin", "Fantasy"),
+            BookInfo("Fahrenheit 451", "Ray Bradbury", "1st", "Ballantine Books", "Dystopian"),
+            BookInfo("Pride and Prejudice", "Jane Austen", "1st", "T. Egerton", "Romance"),
+        ]
+
+        self.library_search = LibrarySearch(self.library_catalog) # Jacob added this line to create an instance of the LibrarySearch class
+        self.recommendations = Recommendations(self.book_list, self.library_catalog)
 
         self.setup_tabs()  
 
@@ -55,7 +64,7 @@ class ReadingListManagement:
         self.book_frame = tk.Frame(self.tabs)
         self.tabs.add(self.book_frame, text="My Books")
 
-        labels = ["Title", "Author", "Edition", "Publisher"]
+        labels = ["Title", "Author", "Edition", "Publisher", "genre"]
         self.entries = {}
 
         for i, text in enumerate(labels):
@@ -108,12 +117,15 @@ class ReadingListManagement:
         a = self.entries["author"].get().strip()
         e = self.entries["edition"].get().strip()
         p = self.entries["publisher"].get().strip()
+        g = self.entries["genre"].get().strip()
     #Most of the books will have the name of the book and the name of author 
         if t and a == "":
             messagebox.showerror("Input Error", "Title and Author cannot be empty.")
             return
 
-        self.book_list.append(BookInfo(t, a, e, p))
+        self.recommendations = Recommendations(self.book_list, self.library_catalog)
+
+        self.book_list.append(BookInfo(t, a, e, p, g))
         self.refresh()
         self.clear()
 
@@ -241,13 +253,6 @@ class ReadingListManagement:
 
 if __name__ == "__main__":
     root = tk.Tk()
-
-    #sample data
-    library_catalog = [
-        BookInfo("The Hobbit", "J.R.R. Tolkien", "1st", "Allen & Unwin", "Fantasy"),
-        BookInfo("1984", "George Orwell", "1st", "Secker & Warburg", "Dystopian"),
-        BookInfo("To Kill a Mockingbird", "Harper Lee", "1st", "J.B. Lippincott & Co.", "Fiction")
-    ]
 
     app = ReadingListManagement(root)
     root.mainloop()
