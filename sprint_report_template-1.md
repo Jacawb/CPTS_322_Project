@@ -1,5 +1,5 @@
 # Sprint x Report
-Video Link:
+Video Link: https://www.youtube.com/watch?v=OkbqekmI2KY
 
 ## What's New (User Facing)
 * Citation Generator
