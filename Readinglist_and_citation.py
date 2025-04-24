@@ -49,6 +49,13 @@ class ReadingListManagement:
         self.library_search = LibrarySearch(self.library_catalog) # Jacob added this line to create an instance of the LibrarySearch class
         self.recommendations = Recommendations(self.book_list, self.library_catalog)
 
+        # Add books to the reading list
+        self.reading_list = [
+            BookInfo("The Hobbit", "J.R.R. Tolkien", "1st", "Allen & Unwin", "Fantasy"),
+            BookInfo("1984", "George Orwell", "1st", "Secker & Warburg", "Dystopian"),
+            BookInfo("To Kill a Mockingbird", "Harper Lee", "1st", "J.B. Lippincott & Co.", "Fiction"),
+        ]
+
         self.setup_tabs()  
 
     def setup_tabs(self):
@@ -123,11 +130,12 @@ class ReadingListManagement:
             messagebox.showerror("Input Error", "Title and Author cannot be empty.")
             return
 
+        self.book_list.append(BookInfo(t, a, e, p, g))
         self.recommendations = Recommendations(self.book_list, self.library_catalog)
 
-        self.book_list.append(BookInfo(t, a, e, p, g))
         self.refresh()
         self.clear()
+        self.show_recommendations()
 
     def remove(self):
         # The user will get selected item in the list
