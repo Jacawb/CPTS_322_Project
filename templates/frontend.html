@@ -139,6 +139,35 @@
     
     let readingList = [];
 
+        document.getElementById("login").addEventListener("submit", function(e) {
+            e.preventDefault();
+            let username = document.getElementById("loginUsername").value;
+            let password = document.getElementById("loginPassword").value;
+
+            fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(err => console.error("Login error:", err));
+        });
+
+        document.getElementById("accountCreation").addEventListener("submit", function(e) {
+            e.preventDefault();
+            let username = document.getElementById("newUsername").value;
+            let password = document.getElementById("newPassword").value;
+
+            fetch("/new_user", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(err => console.error("Error:", err));
+        });
     function switchTab(id) {
         document.querySelectorAll(".section").forEach(sec => sec.classList.remove("visible"));
         document.getElementById(id).classList.add("visible");
