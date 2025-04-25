@@ -149,9 +149,11 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
             })
-            .then(response => response.text())
-            .then(data => console.log(data))
-            .catch(err => console.error("Login error:", err));
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || data.error);
+            })
+            .catch(err => console.error("Error:", err));
         });
 
         document.getElementById("accountCreation").addEventListener("submit", function(e) {
@@ -164,8 +166,10 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
             })
-            .then(response => response.text())
-            .then(data => console.log(data))
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || data.error);
+            })
             .catch(err => console.error("Error:", err));
         });
     function switchTab(id) {
