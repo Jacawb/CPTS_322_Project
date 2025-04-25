@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, render_template
 from passlib.hash import pbkdf2_sha256 as hasher
 
 # Globals
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 DATA_FILE = "data.json"
 
 # User-data Format (Dictionary)
@@ -81,7 +81,7 @@ def login():
 # Render HTML
 @app.route("/")
 def home():
-    return render_template('FrontEndSite.html')
+    return render_template('frontend.html')
 
 
 
