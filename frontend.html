@@ -88,8 +88,13 @@
         <input type="text" id="bookAuthor" placeholder="Author">
         <input type="text" id="bookYear" placeholder="Year">
         <input type="text" id="bookPublisher" placeholder="Publisher">
+        <input type="text" id="bookGenre" placeholder="Genre">
         <button onclick="addBook()">Add</button>
         <ul id="savedBooks"></ul>
+
+        <h3>Recommendations</h3>
+        <ul id="recommendationsArea"></ul>
+        <button onclick="generateRecommendationsUI()">Show Recommendations</button>
     </div>
 
     <div id="citation" class="section">
@@ -112,7 +117,11 @@
     function switchTab(id) {
         document.querySelectorAll(".section").forEach(sec => sec.classList.remove("visible"));
         document.getElementById(id).classList.add("visible");
-        if (id === "myList") renderList();
+        if (id === "myList")
+        {
+            renderList();
+            showRecommendations();
+        }
     }
 
     function addBook() {
@@ -120,17 +129,19 @@
     let author = document.getElementById("bookAuthor").value.trim();
     let publisher = document.getElementById("bookPublisher").value.trim();
     let year = document.getElementById("bookYear").value.trim();
+    let genre = document.getElementById("bookGenre").value.trim();
 
     if (!title || !author) {
         alert("Please enter both title and author!");
         return;
     }
-    readingList.push({ title, author, publisher, year });
+    readingList.push({ title, author, publisher, year, genre });
     alert(` Added: "${title}" by ${author} (${year}, ${publisher})`);
     document.getElementById("bookTitle").value = "";
     document.getElementById("bookAuthor").value = "";
     document.getElementById("bookPublisher").value = "";
     document.getElementById("bookYear").value = "";
+    document.getElementById("bookGenre").value = "";
     renderList();
 }
 
@@ -153,6 +164,24 @@
             li.appendChild(delBtn);
             ul.appendChild(li);
         });
+    }
+
+    function showRecommendations() {
+        const catalog = getLibraryCatalog();
+        const recs = generateRecommendations(catalog, readingList);
+
+        const area = document.getElementById("recommendationsArea");
+        area.innerHTML = "";
+
+        if (recs.length === 0) {
+            area.innerHTML = "<li>No recommendations available.</li>";
+        } else {
+            recs.forEach(book => {
+                const li = document.createElement("li");
+                li.textContent = `${book.title} by ${book.author} (${book.genre})`;
+                area.appendChild(li);
+            });
+        }
     }
 
 
@@ -202,6 +231,52 @@
         document.getElementById("apaOutput").textContent = apa;
         document.getElementById("mlaOutput").textContent = mla;
     }
+
+    function generateRecommendations(catalog, readingList, limit = 5) {
+        const genres = new Set(readingList.map(b => b.genre).filter(Boolean));
+        const seen = new Set(readingList.map(b => b.title + b.author));
+
+        const recommendations = [];
+        for (const book of catalog) {
+            if (genres.has(book.genre) && !seen.has(book.title + book.author)) {
+            recommendations.push(book);
+            if (recommendations.length >= limit) break;
+            }
+        }
+        return recommendations;
+    }
+
+    function generateRecommendationsUI() {
+        switchTab('myList');
+        const catalog = getLibraryCatalog();// this is where a real API call could be made
+        const recs = generateRecommendations(catalog, readingList);
+        const ul = document.getElementById("recommendationList");
+        ul.innerHTML = "";
+        
+        if (recs.length === 0) {
+            ul.innerHTML = "<li>No recommendations found.</li>";
+        } else {
+            recs.forEach(book => {
+                const li = document.createElement("li");
+                li.textContent = `${book.title} by ${book.author} (${book.genre})`;
+                ul.appendChild(li);
+            });
+        }
+    }
+
+    //sample library catalog
+    function getLibraryCatalog() {
+        return [
+            { title: "1984", author: "George Orwell", genre: "Dystopian" },
+            { title: "Brave New World", author: "Aldous Huxley", genre: "Dystopian" },
+            { title: "To Kill a Mockingbird", author: "Harper Lee", genre: "Classic" },
+            { title: "Pride and Prejudice", author: "Jane Austen", genre: "Romance" },
+            { title: "The Great Gatsby", author: "F. Scott Fitzgerald", genre: "Classic" },
+            { title: "Neuromancer", author: "William Gibson", genre: "Sci-Fi" },
+            { title: "Dune", author: "Frank Herbert", genre: "Sci-Fi" },
+        ];
+    }
+
 </script>
 </body>
 </html>
